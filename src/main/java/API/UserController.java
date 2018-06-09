@@ -19,7 +19,7 @@ public class UserController {
 
     //Create a new user
     @RequestMapping(value = "/", method = RequestMethod.POST)
-    public ResponseEntity<Void> createUser(@RequestBody User user, UriComponentsBuilder ucBuilder) {
+    public ResponseEntity<Void> createUser(@RequestBody User user) {
 
         if (!isNew(user)) {
             System.out.println("User: " + user.getFullname() + " already exists");
