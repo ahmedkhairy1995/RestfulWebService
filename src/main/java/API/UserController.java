@@ -58,10 +58,29 @@ public class UserController {
         return true;
     }
 
-
-    @PutMapping("")
-    public void editUser(){
-
+    @PutMapping("/")
+    public  ResponseEntity <String> editUser(@RequestBody User editedUser){
+        if(this.usersList.isEmpty()){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        else{
+            for(User user : this.usersList){
+                if(user.getID() == editedUser.getID())
+                    if(!user.getMobileNum().equals(editedUser.getMobileNum()))
+                        return new ResponseEntity<>("Cannot edit mobile number",HttpStatus.FOUND);
+                    else{
+                        user.setAddress(editedUser.getAddress());
+                        user.setAge(editedUser.getAge());
+                        user.setEmail(editedUser.getEmail());
+                        user.setFullname(editedUser.getFullname());
+                        user.setGender(editedUser.getGender());
+                        user.setLocation(editedUser.getLocation());
+                        user.setPassword(editedUser.getPassword());
+                        return new ResponseEntity<>("Edited Successfully",HttpStatus.FOUND);
+                    }
+            }
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
 }
