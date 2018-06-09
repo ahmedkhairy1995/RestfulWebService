@@ -12,6 +12,7 @@ public class User {
     private String address;
     private int gender;
     private int age;
+    private long ID;
 
     public User(){}
 
@@ -80,6 +81,10 @@ public class User {
     public void setLocation(Location location) {
         this.location = location;
     }
+
+    public long getID() { return ID; }
+
+    public void setID(long ID) { this.ID = ID; }
 
     @Override
     public String toString() {
