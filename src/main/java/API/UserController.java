@@ -21,10 +21,8 @@ public class UserController {
     @RequestMapping(value = "/", method = RequestMethod.POST)
     public ResponseEntity<Void> createUser(@RequestBody User user) {
 
-        if (!isNew(user)) {
-            System.out.println("User: " + user.getFullname() + " already exists");
+        if (!isNew(user))
             return new ResponseEntity<Void>(HttpStatus.CONFLICT);
-        }
         else {
 
             user.setID(this.IDCount.incrementAndGet());
