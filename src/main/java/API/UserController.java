@@ -9,8 +9,7 @@ import java.util.concurrent.atomic.AtomicLong;
 @RestController
 @RequestMapping("/user")
 public class UserController {
-
-    private static ArrayList<User> usersList = new ArrayList();
+    private static ArrayList<User> usersList = new ArrayList<>();
     private static final AtomicLong IDCount = new AtomicLong(0);
 
     //Create a new user
@@ -18,40 +17,39 @@ public class UserController {
     public ResponseEntity<Void> createUser(@RequestBody User user) {
 
         if (!isNew(user))
-            return new ResponseEntity<Void>(HttpStatus.CONFLICT);
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
         else {
-
-            user.setID(this.IDCount.incrementAndGet());
-            this.usersList.add(user);
-            return new ResponseEntity<Void>(HttpStatus.CREATED);
+            user.setID(IDCount.incrementAndGet());
+            usersList.add(user);
+            return new ResponseEntity<>(HttpStatus.CREATED);
         }
     }
 
     //Get user
-    @RequestMapping(value = "/{ID}", method = RequestMethod.GET)
-    public ResponseEntity<User> getUser(@PathVariable("ID") long ID){
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    public ResponseEntity<User> getUser(@PathVariable("id") long id){
 
-        for(User user: this.usersList){
-            if(user.getID() == ID){
-                return new ResponseEntity<User>(user, HttpStatus.OK);
+        for(User user: usersList){
+            if(user.getID() == id){
+                return new ResponseEntity<>(user, HttpStatus.OK);
             }
         }
-        return new ResponseEntity<User>(HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     //Get all users
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public ResponseEntity<ArrayList<User>> getAllUsers(){
 
-        if(this.usersList.isEmpty()){
-            return new ResponseEntity<ArrayList<User>>(HttpStatus.NOT_FOUND);
+        if(usersList.isEmpty()){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<ArrayList<User>>(this.usersList, HttpStatus.FOUND);
+        return new ResponseEntity<>(usersList, HttpStatus.FOUND);
     }
 
     //Check if it is a new user
     private boolean isNew(User newUser) {
-        for(User user : this.usersList){
+        for(User user : usersList){
             if(user.getFullname().equalsIgnoreCase(newUser.getFullname()))
                 return false;
         }
@@ -59,16 +57,15 @@ public class UserController {
     }
 
     @PutMapping("/")
-    public  ResponseEntity <String> editUser(@RequestBody User editedUser){
-        if(this.usersList.isEmpty()){
+    public  ResponseEntity <String> editUser(@RequestBody User editedUser) {
+        if (usersList.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        else{
-            for(User user : this.usersList){
-                if(user.getID() == editedUser.getID())
-                    if(!user.getMobileNum().equals(editedUser.getMobileNum()))
-                        return new ResponseEntity<>("Cannot edit mobile number",HttpStatus.FOUND);
-                    else{
+        } else {
+            for (User user : usersList) {
+                if (user.getID() == editedUser.getID())
+                    if (!user.getMobileNum().equals(editedUser.getMobileNum()))
+                        return new ResponseEntity<>("Cannot edit mobile number", HttpStatus.FOUND);
+                    else {
                         user.setAddress(editedUser.getAddress());
                         user.setAge(editedUser.getAge());
                         user.setEmail(editedUser.getEmail());
@@ -76,11 +73,32 @@ public class UserController {
                         user.setGender(editedUser.getGender());
                         user.setLocation(editedUser.getLocation());
                         user.setPassword(editedUser.getPassword());
-                        return new ResponseEntity<>("Edited Successfully",HttpStatus.FOUND);
+                        return new ResponseEntity<>("Edited Successfully", HttpStatus.FOUND);
                     }
             }
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
+    @GetMapping("/{id}/verify/")
+    public ResponseEntity<String> verification(@PathVariable("id") long id) {
+        for (User user : usersList){
+            if(user.getID()==id) {
+                user.setVerified(true);
+                return new ResponseEntity<>("User is verified", HttpStatus.OK);
+            }
+        }
+        return new ResponseEntity<>("User not found", HttpStatus.NOT_FOUND);
+    }
+
+    @GetMapping("/{id}/suspend/")
+    public ResponseEntity<String> suspension(@PathVariable("id") long id) {
+        for (User user : usersList){
+            if(user.getID()==id){
+                user.setSuspended(true);
+                return new ResponseEntity<>("User is suspended", HttpStatus.OK);
+            }
+        }
+        return new ResponseEntity<>("User not found", HttpStatus.NOT_FOUND);
+    }
 }

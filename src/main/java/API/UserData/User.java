@@ -10,6 +10,8 @@ public class User {
     private String password;
     private String email;
     private String address;
+    private boolean suspended = false;
+    private boolean verified = false;
     private int gender;
     private int age;
     private long ID;
@@ -85,6 +87,22 @@ public class User {
     public long getID() { return ID; }
 
     public void setID(long ID) { this.ID = ID; }
+
+    public boolean isSuspended() {
+        return suspended;
+    }
+
+    public void setSuspended(boolean suspended) {
+        this.suspended = suspended;
+    }
+
+    public boolean isVerified() {
+        return verified;
+    }
+
+    public void setVerified(boolean verified) {
+        this.verified = verified;
+    }
 
     @Override
     public String toString() {
