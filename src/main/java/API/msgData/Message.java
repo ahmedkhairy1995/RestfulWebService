@@ -10,25 +10,41 @@ public class Message {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private long id;
+    private long sender;
+    private long receiver;
+    private String text;
 
-    private String msg;
-    private String fromEmail;
-    private String toEmail;
+    public Message(){}
 
-    public long getID() { return id; }
+    public long getId() {
+        return id;
+    }
 
-    public void setID(long id) { this.id = id; }
+    public void setId(long id) {
+        this.id = id;
+    }
 
-    public String getMsg() { return msg; }
+    public long getSender() {
+        return sender;
+    }
 
-    public void setMsg(String msg) { this.msg = msg; }
+    public void setSender(long sender) {
+        this.sender = sender;
+    }
 
-    public String getFromEmail() { return fromEmail; }
+    public long getReceiver() {
+        return receiver;
+    }
 
-    public void setFromEmail(String fromEmail) { this.fromEmail = fromEmail; }
+    public void setReceiver(long receiver) {
+        this.receiver = receiver;
+    }
 
-    public String getTomEmail() { return toEmail; }
+    public String getText() {
+        return text;
+    }
 
-    public void setToEmail(String toEmail) { this.toEmail = toEmail; }
-
+    public void setText(String text) {
+        this.text = text;
+    }
 }

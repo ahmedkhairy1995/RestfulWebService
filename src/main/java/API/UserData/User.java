@@ -26,8 +26,6 @@ public class User {
     private boolean verified = false;
     private int gender;
     private int age;
-    //private String address;
-
 
     public User(){}
 
@@ -63,17 +61,12 @@ public class User {
         this.email = email;
     }
 
-  // public String getAddress() { return address; }
-
-  // public void setAddress(String address) { this.address = address; }
-
     public List<Location> getLocations() { return this.locations; }
 
     public void setLocations(List<Location> locations) {
-      this.locations.clear();
-        if (locations != null) {
+        this.locations.clear();
+        if (locations != null)
             this.locations.addAll(locations);
-        }
     }
 
     public int getGender() { return gender; }

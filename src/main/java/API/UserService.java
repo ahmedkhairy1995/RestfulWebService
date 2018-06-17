@@ -4,7 +4,6 @@ import API.UserData.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
-import java.util.ArrayList;
 import java.util.Optional;
 
 @Service("userService")
@@ -15,7 +14,7 @@ public class UserService {
 
     //Create new User
     public boolean saveUser(User user) {
-        if(!isNew(user))
+        if(isFound(user.getEmail()))
             return false;
         else{
             userRepository.save(user);
@@ -56,18 +55,23 @@ public class UserService {
         return users;
     }
 
+    //Delete Existing User
+    public boolean deleteUser(long id) {
+//        if(existing(id)){
+//            userRepository.setSuspendedFor(true,id);
+//            return true;
+//        }
+        return false;
+    }
+
     //Check if it is a new user
-    private boolean isNew(User newUser) {
-        Optional<User> userFound = userRepository.findByEmail(newUser.getEmail());
-        if(userFound.isPresent()){
-            return false;
-        }
-        return true;
+    public boolean isFound(String email) {
+        Optional<User> userFound = userRepository.findByEmail(email);
+        return userFound.isPresent();
     }
 
-    public void find(User user){
-        Optional<User> u = userRepository.findById(user.getID());
-        System.out.print(u);
+    //Check if it is an existing user
+    public boolean existing(long id) {
+        return userRepository.existsById(id);
     }
-
 }

@@ -1,17 +1,14 @@
 package API;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import API.UserData.User;
-import java.util.ArrayList;
-import java.util.concurrent.atomic.AtomicLong;
 
 @RestController
 @RequestMapping("/user")
 public class UserController {
-    //private static ArrayList<User> usersList = new ArrayList<>();
-    //private static final AtomicLong IDCount = new AtomicLong(0);
 
     @Autowired
     private UserService userService;
@@ -22,9 +19,17 @@ public class UserController {
 
         if (!userService.saveUser(user))
             return new ResponseEntity<>(HttpStatus.CONFLICT);
-        else {
+        else
             return new ResponseEntity<>(HttpStatus.CREATED);
-        }
+    }
+
+    //Delete Existing User
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Void> deleteUser(@PathVariable("id") long id) {
+        if(userService.deleteUser(id))
+            return new ResponseEntity<>(HttpStatus.ACCEPTED);
+        else
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     //Update user
