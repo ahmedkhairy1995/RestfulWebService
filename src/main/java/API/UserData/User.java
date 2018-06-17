@@ -1,24 +1,35 @@
 package API.UserData;
 
 import API.LocationData.Location;
-import org.springframework.stereotype.Component;
 
-@Component
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
+
+@Entity
 public class User {
+    @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    private long id;
+
+    @OneToMany(
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private List<Location> locations = new ArrayList<>();
+
     private String fullname;
     private String mobileNum;
     private String password;
     private String email;
-    private String address;
     private boolean suspended = false;
     private boolean verified = false;
     private int gender;
     private int age;
-    private long ID;
+    //private String address;
+
 
     public User(){}
-
-    private Location location = new Location();
 
     public String getFullname() {
         return fullname;
@@ -52,60 +63,36 @@ public class User {
         this.email = email;
     }
 
-    public String getAddress() {
-        return address;
-    }
+  // public String getAddress() { return address; }
 
-    public void setAddress(String address) {
-        this.address = address;
-    }
+  // public void setAddress(String address) { this.address = address; }
 
-    public int getGender() {
-        return gender;
-    }
+    public List<Location> getLocations() { return this.locations; }
 
-    public void setGender(int gender) {
-        this.gender = gender;
-    }
+    public void setLocations(List<Location> locations) { this.locations = locations; }
 
-    public int getAge() {
-        return age;
-    }
+    public int getGender() { return gender; }
 
-    public void setAge(int age) {
-        this.age = age;
-    }
+    public void setGender(int gender) { this.gender = gender; }
 
-    public Location getLocation() {
-        return location;
-    }
+    public int getAge() { return age; }
 
-    public void setLocation(Location location) {
-        this.location = location;
-    }
+    public void setAge(int age) { this.age = age; }
 
-    public long getID() { return ID; }
+    public long getID() { return id; }
 
-    public void setID(long ID) { this.ID = ID; }
+    public void setID(long id) { this.id = id; }
 
     public boolean isSuspended() {
         return suspended;
     }
 
-    public void setSuspended(boolean suspended) {
-        this.suspended = suspended;
-    }
+    public void setSuspended(boolean suspended) { this.suspended = suspended; }
 
-    public boolean isVerified() {
-        return verified;
-    }
+    public boolean isVerified() { return verified; }
 
-    public void setVerified(boolean verified) {
-        this.verified = verified;
-    }
+    public void setVerified(boolean verified) { this.verified = verified; }
 
     @Override
-    public String toString() {
-        return fullname + " - " + location.toString();
-    }
+    public String toString() { return fullname + " - " + email; }
 }

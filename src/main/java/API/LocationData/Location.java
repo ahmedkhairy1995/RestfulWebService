@@ -1,6 +1,16 @@
 package API.LocationData;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
+@Entity
 public class Location {
+    @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    private Long id;
+
     private double longitude;
     private double latitude;
 
@@ -21,6 +31,10 @@ public class Location {
     public void setLatitude(double latitude) {
         this.latitude = latitude;
     }
+
+    public long getID() { return id; }
+
+    public void setID(long id) { this.id = id; }
 
     @Override
     public String toString() {

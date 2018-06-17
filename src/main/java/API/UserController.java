@@ -1,4 +1,5 @@
 package API;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -9,24 +10,26 @@ import java.util.concurrent.atomic.AtomicLong;
 @RestController
 @RequestMapping("/user")
 public class UserController {
-    private static ArrayList<User> usersList = new ArrayList<>();
-    private static final AtomicLong IDCount = new AtomicLong(0);
+    //private static ArrayList<User> usersList = new ArrayList<>();
+    //private static final AtomicLong IDCount = new AtomicLong(0);
+
+    @Autowired
+    private UserService userService;
 
     //Create a new user
-    @RequestMapping(value = "/", method = RequestMethod.POST)
+    @PostMapping("/")
     public ResponseEntity<Void> createUser(@RequestBody User user) {
 
-        if (!isNew(user))
+        if (!userService.saveUser(user))
             return new ResponseEntity<>(HttpStatus.CONFLICT);
         else {
-            user.setID(IDCount.incrementAndGet());
-            usersList.add(user);
             return new ResponseEntity<>(HttpStatus.CREATED);
         }
     }
 
+    /*
     //Get user
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    @GetMapping("/{id}")
     public ResponseEntity<User> getUser(@PathVariable("id") long id){
 
         for(User user: usersList){
@@ -38,7 +41,7 @@ public class UserController {
     }
 
     //Get all users
-    @RequestMapping(value = "/", method = RequestMethod.GET)
+    @GetMapping("/")
     public ResponseEntity<ArrayList<User>> getAllUsers(){
 
         if(usersList.isEmpty()){
@@ -47,14 +50,7 @@ public class UserController {
         return new ResponseEntity<>(usersList, HttpStatus.FOUND);
     }
 
-    //Check if it is a new user
-    private boolean isNew(User newUser) {
-        for(User user : usersList){
-            if(user.getFullname().equalsIgnoreCase(newUser.getFullname()))
-                return false;
-        }
-        return true;
-    }
+
 
     @PutMapping("/")
     public  ResponseEntity <String> editUser(@RequestBody User editedUser) {
@@ -66,7 +62,7 @@ public class UserController {
                     if (!user.getMobileNum().equals(editedUser.getMobileNum()))
                         return new ResponseEntity<>("Cannot edit mobile number", HttpStatus.FOUND);
                     else {
-                        user.setAddress(editedUser.getAddress());
+                        //user.setAddress(editedUser.getAddress());
                         user.setAge(editedUser.getAge());
                         user.setEmail(editedUser.getEmail());
                         user.setFullname(editedUser.getFullname());
@@ -101,4 +97,5 @@ public class UserController {
         }
         return new ResponseEntity<>("User not found", HttpStatus.NOT_FOUND);
     }
+    */
 }
