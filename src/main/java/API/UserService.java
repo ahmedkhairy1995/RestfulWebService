@@ -4,6 +4,7 @@ import API.UserData.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.Optional;
 
 @Service("userService")
@@ -57,10 +58,10 @@ public class UserService {
 
     //Delete Existing User
     public boolean deleteUser(long id) {
-//        if(existing(id)){
-//            userRepository.setSuspendedFor(true,id);
-//            return true;
-//        }
+        if(existing(id)){
+            userRepository.setSuspendedFor(true,id);
+            return true;
+        }
         return false;
     }
 
