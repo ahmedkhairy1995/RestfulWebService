@@ -27,54 +27,36 @@ public class UserController {
         }
     }
 
-    /*
+    //Update user
+    @PutMapping("/")
+    public  ResponseEntity <String> editUser(@RequestBody User editedUser) {
+        if(!userService.updateUser(editedUser))
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
+        else {
+            return new ResponseEntity<>(HttpStatus.CREATED);
+        }
+    }
+
     //Get user
     @GetMapping("/{id}")
     public ResponseEntity<User> getUser(@PathVariable("id") long id){
-
-        for(User user: usersList){
-            if(user.getID() == id){
-                return new ResponseEntity<>(user, HttpStatus.OK);
-            }
-        }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        User user = userService.retrieveUser(id);
+        if( user != null)
+            return new ResponseEntity<>(user, HttpStatus.OK);
+        else
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     //Get all users
     @GetMapping("/")
     public ResponseEntity<ArrayList<User>> getAllUsers(){
 
-        if(usersList.isEmpty()){
+        if(userService.retrieveUsers().isEmpty()){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(usersList, HttpStatus.FOUND);
+        return new ResponseEntity<>(userService.retrieveUsers(), HttpStatus.FOUND);
     }
-
-
-
-    @PutMapping("/")
-    public  ResponseEntity <String> editUser(@RequestBody User editedUser) {
-        if (usersList.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        } else {
-            for (User user : usersList) {
-                if (user.getID() == editedUser.getID())
-                    if (!user.getMobileNum().equals(editedUser.getMobileNum()))
-                        return new ResponseEntity<>("Cannot edit mobile number", HttpStatus.FOUND);
-                    else {
-                        //user.setAddress(editedUser.getAddress());
-                        user.setAge(editedUser.getAge());
-                        user.setEmail(editedUser.getEmail());
-                        user.setFullname(editedUser.getFullname());
-                        user.setGender(editedUser.getGender());
-                        user.setLocation(editedUser.getLocation());
-                        user.setPassword(editedUser.getPassword());
-                        return new ResponseEntity<>("Edited Successfully", HttpStatus.FOUND);
-                    }
-            }
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-    }
+    /*
 
     @GetMapping("/{id}/verify/")
     public ResponseEntity<String> verification(@PathVariable("id") long id) {

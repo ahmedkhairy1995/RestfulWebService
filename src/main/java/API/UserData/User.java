@@ -69,7 +69,12 @@ public class User {
 
     public List<Location> getLocations() { return this.locations; }
 
-    public void setLocations(List<Location> locations) { this.locations = locations; }
+    public void setLocations(List<Location> locations) {
+      this.locations.clear();
+        if (locations != null) {
+            this.locations.addAll(locations);
+        }
+    }
 
     public int getGender() { return gender; }
 
